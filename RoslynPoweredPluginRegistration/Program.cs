@@ -5,34 +5,33 @@
     using System.Linq;
     using System.Text;
 
-    using Roslyn.Compilers;
-
-    using Roslyn.Compilers.CSharp;
+    using RoslynPoweredPluginRegistrationLib;
 
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            var syntaxTree = SyntaxTree.ParseFile(@"..\..\Registration.cs");
+            var registrator = new Registrator();
 
-            var arrayCreation =
-                (ArrayCreationExpressionSyntax)syntaxTree.GetRoot().DescendantNodes().First(n => n.Kind == SyntaxKind.ArrayCreationExpression);
-
-            var arrayInitialization = (InitializerExpressionSyntax)arrayCreation.DescendantNodes().First(x => x.Kind == SyntaxKind.ArrayInitializerExpression);
-
-
-            var expressions = arrayInitialization.Expressions;
-
-            foreach (var e in expressions)
-            {
-                var memberAccess = (MemberAccessExpressionSyntax)e;
-
-                var name = memberAccess.Name.ToString();
-            }
-
-            var statement = arrayCreation.GetText();
+            var statement = registrator.GetRegistrationInstructions(@"..\..\..\TestPlugin\Registration.cs");
 
             Console.Write(statement);
+        }
+
+        /// <summary>
+        /// Register assembly.
+        /// </summary>
+        private static void Register()
+        {
+            
+        }
+
+        /// <summary>
+        /// Check if Registration class is correct.
+        /// </summary>
+        private static void Check()
+        {
+            
         }
     }
 }
